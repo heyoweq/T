@@ -1,0 +1,67 @@
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Reaver Hub", "BloodTheme")
+
+-- MAIN
+local Main = Window:NewTab("Main")
+local MainSection = Main:NewSection("Main")
+local remotePath = game:GetService("ReplicatedStorage")
+function Tap()
+    if autoTap == true then
+        wait(0.2)
+        remotePath.Events.Tap:FireServer()
+    end
+end
+
+function Hatch(EggName, Amount)
+    if autoEgg == true then
+        wait(0.2)
+        remotePath.Events.HatchEgg:InvokeServer({}, EggName, Amount)
+    end
+end
+
+function Rebirth(Amount)
+    if autoRebirth == true then
+        wait(0.2)
+        game:GetService("ReplicatedStorage").Events.Rebirth:FireServer(Amount)
+    end
+end
+
+MainSection:NewToggle("Auto Tap", "Taps Repeatedly Fast", function(state)
+    getgenv().autoTap = state
+    spawn(function()
+        while autoTap do wait()
+            Tap()
+        end
+    end)
+end)
+
+MainSection:NewDropdown("Egg", "Egg Choice", {"Starter", "Wood Egg", "Jungle Egg"}, function(v)
+    getgenv().EggChosen = v
+end)
+
+MainSection:NewToggle("Auto Hatch Egg", "Hatches Selected Egg Fast", function(state)
+    getgenv().autoEgg = state
+    spawn(function()
+        while autoEgg do wait()
+            Hatch(tostring(getgenv().EggChosen), tonumber(getgenv().EggAmount))
+        end
+    end)
+end)
+
+function Rebirth(Amount)
+    if autoRebirth == true then
+        wait(0.0)
+        remotePath.Events.Rebirth:FireServer(Amount)
+    end
+end
+
+MainSection:NewToggle("Auto Rebirth", "Automatically Rebirths", function(state)
+    getgenv().autoRebirth = state
+    spawn(function()
+        while autoRebirth do wait()
+            Rebirth(5)
+        end
+    end)
+end)
+
