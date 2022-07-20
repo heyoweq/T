@@ -1,0 +1,14 @@
+getgenv().autoTap = true 
+getgenv().buyEgg = false
+
+local RemotePath = game:GetService("ReplicatedStorage").Events
+
+local function doTap()
+    task.spawn(function()
+        while task.wait() and autoTap do
+            RemotePath.Tap:FireServer()
+            dotap()
+            wait()
+        end
+    end)
+end
