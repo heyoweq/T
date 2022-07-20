@@ -1,0 +1,12 @@
+getgenv().autoTap = false
+
+
+
+Callback = function(Value1)
+    default = false 
+    autoTap = Value1
+    if autoTap then
+        doTap()
+        wait()
+    end   
+end   
